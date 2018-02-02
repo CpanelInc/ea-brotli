@@ -11,12 +11,6 @@ URL: hhttps://github.com/google/brotli
 
 Source: https://github.com/google/brotli/archive/v1.0.2.tar.gz
 
-%if %{__isa_bits} == 64
-Provides: libbrotli.so.5()(64bit)
-%else
-Provides: libbrotli.so.5
-%endif
-
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
