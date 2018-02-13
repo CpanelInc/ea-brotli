@@ -2,12 +2,12 @@ Name: ea-brotli
 Summary: Brotli compression format
 Version: 1.0.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 1
+%define release_prefix 2
 Release: %{release_prefix}%{?dist}.cpanel
 Vendor: cPanel, Inc.
 Group: System Environment/Libraries
 License: LGPLv2+ and GPLv2+
-URL: hhttps://github.com/google/brotli
+URL: https://github.com/google/brotli
 
 Source: https://github.com/google/brotli/archive/v1.0.2.tar.gz
 
@@ -57,5 +57,8 @@ rm -rf $RPM_BUILD_ROOT
 /opt/cpanel/ea-brotli/include
 
 %changelog
+* Tue Feb 13 2018 Dan Muey <dan@cpanel.net> - 1.0.2-2
+- EA-7223: fix typo in URL
+
 * Thu Feb 01 2018 Dan Muey <dan@cpanel.net> - 1.0.2-1
 - EA-7154: Initial brotli library for EA4
