@@ -2,7 +2,7 @@ Name: ea-brotli
 Summary: Brotli compression format
 Version: 1.0.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 3
 Release: %{release_prefix}%{?dist}.cpanel
 Vendor: cPanel, Inc.
 Group: System Environment/Libraries
@@ -44,6 +44,7 @@ make test
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/opt/cpanel/ea-brotli
 make install DESTDIR=$RPM_BUILD_ROOT
+ln -s /opt/cpanel/ea-brotli/lib $RPM_BUILD_ROOT/opt/cpanel/ea-brotli/lib64
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,6 +58,9 @@ rm -rf $RPM_BUILD_ROOT
 /opt/cpanel/ea-brotli/include
 
 %changelog
+* Fri Mar 30 2018 Rishwanth Yeddula <rish@cpanel.net> - 1.0.2-3
+- ZC-3552: Ensure lib64 symlink is configured.
+
 * Tue Feb 13 2018 Dan Muey <dan@cpanel.net> - 1.0.2-2
 - EA-7223: fix typo in URL
 
