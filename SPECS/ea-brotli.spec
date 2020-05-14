@@ -2,7 +2,7 @@ Name: ea-brotli
 Summary: Brotli compression format
 Version: 1.0.2
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 3
+%define release_prefix 4
 Release: %{release_prefix}%{?dist}.cpanel
 Vendor: cPanel, Inc.
 Group: System Environment/Libraries
@@ -12,6 +12,18 @@ URL: https://github.com/google/brotli
 Source: https://github.com/google/brotli/archive/v1.0.2.tar.gz
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires: cmake
+
+%if 0%{?rhel} > 7
+BuildRequires: libnghttp2
+Requires: libnghttp2
+
+# This one is totally insane.  We are building a copy of libbrotli, but cmake
+# has a dependency on libbrotli, so I have to bring it in so that cmake will
+# work, go figure.
+BuildRequires: brotli
+%endif
 
 %description
 Brotli is a generic-purpose lossless compression algorithm that compresses data using a combination of a
@@ -23,7 +35,6 @@ modern variant of the LZ77 algorithm, Huffman coding and 2nd order context model
 Summary: Header files and development libraries for %{name}
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
-BuildRequires: cmake
 
 %description devel
 This package contains the header files and development libraries
@@ -36,7 +47,17 @@ to install %{name}-devel.
 
 %build
 
+echo "CMAKE"
+set
+which cmake
+whereis cmake
+ldd /usr/bin/cmake
+/usr/bin/cmake --version
+echo "END"
+
+
 ./configure-cmake --prefix=/opt/cpanel/ea-brotli
+
 make
 make test
 
@@ -58,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 /opt/cpanel/ea-brotli/include
 
 %changelog
+* Thu May 14 2020 Julian Brown <julian.brown@cpanel.net> - 1.0.2-4
+- ZC-6809: Build on CentOS 8
+
 * Fri Mar 30 2018 Rishwanth Yeddula <rish@cpanel.net> - 1.0.2-3
 - ZC-3552: Ensure lib64 symlink is configured.
 
