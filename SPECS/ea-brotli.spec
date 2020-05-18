@@ -47,15 +47,6 @@ to install %{name}-devel.
 
 %build
 
-echo "CMAKE"
-set
-which cmake
-whereis cmake
-ldd /usr/bin/cmake
-/usr/bin/cmake --version
-echo "END"
-
-
 ./configure-cmake --prefix=/opt/cpanel/ea-brotli
 
 make
