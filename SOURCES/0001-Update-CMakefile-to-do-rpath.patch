@@ -1,0 +1,28 @@
+From 982c6c9e99c77c8d791ca0a2f8583a96bf397def Mon Sep 17 00:00:00 2001
+From: Julian Brown <julian.brown@cpanel.net>
+Date: Mon, 22 May 2023 13:26:16 -0500
+Subject: [PATCH] Update CMakefile to do rpath
+
+---
+ CMakeLists.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4ff3401..d6852d8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4,6 +4,11 @@
+ # support 2.8.7.
+ cmake_minimum_required(VERSION 2.8.6)
+ 
++set(CMAKE_SKIP_BUILD_RPATH FALSE)
++set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++set(CMAKE_INSTALL_RPATH "/opt/cpanel/ea-brotli/lib64")
++set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++
+ project(brotli C)
+ 
+ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+-- 
+2.38.3
+
