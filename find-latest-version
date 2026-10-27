@@ -1,0 +1,59 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+# cpanel - find-latest-version                  Copyright(c) 2026 cPanel, L.L.C.
+#                                                           All rights Reserved.
+# copyright@cpanel.net                                         http://cpanel.net
+# This code is subject to the cPanel license. Unauthorized copying is prohibited
+
+package ea_brotli::find_latest_version;
+
+use strict;
+use warnings;
+
+use lib "../ea-tools/lib/ea4_tool";    # assumes ea-tools is checked out next to this repo
+use ea4_tool::util ();
+
+ea4_tool::util::find_latest_version( \&_get_required, \&_add_sum ) if !caller();
+
+###############
+#### helpers ##
+###############
+
+sub _get_required {
+    my ($http) = @_;
+
+    my $res = $http->get("https://api.github.com/repos/google/brotli/releases");
+    if ( !$res->{success} ) {
+        die "Could not GET brotli info from github ($res->{status} $res->{reason})\n\t Throttled? `curl -I https://api.github.com/rate_limit 2>&1 | grep ^X-RateLimit`\n";
+    }
+
+    # Keep automated updates on the 1.0 line until newer lines have been
+    # packaged and tested against EA4 consumers.
+    my @versions =
+      sort { ea4_tool::util::numerical_only_version_compare( $a, $b ) }
+      map  { ( my $v = $_->{tag_name} )                          =~ s/^v//; $v }
+      grep { !$_->{prerelease} && !$_->{draft} && $_->{tag_name} =~ /^v1\.0\.\d+$/ } @{ ea4_tool::util::json2ref( $res->{content} ) };
+
+    my $version = $versions[0];
+    die "Could not determine version from github\n" if !$version;
+
+    my $name = "v$version.tar.gz";                                            # needs to match $version
+    my $url  = "https://github.com/google/brotli/archive/v$version.tar.gz";
+
+    return ( $version, $url, $name );
+}
+
+sub _add_sum {
+    my ( $http, $hr ) = @_;
+
+    # github does not currently have a way to get the sum
+
+    return;
+}
+
+__END__
+
+=encoding utf-8
+
+=head1 README
+
+Github release-tag pattern, picking the highest stable 1.0 release rather than the newest listed one.
