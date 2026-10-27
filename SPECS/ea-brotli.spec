@@ -1,15 +1,15 @@
 Name: ea-brotli
 Summary: Brotli compression format
-Version: 1.0.9
+Version: 1.0.10
 # Doing release_prefix this way for Release allows for OBS-proof versioning, See EA-4544 for more details
-%define release_prefix 2
+%define release_prefix 1
 Release: %{release_prefix}%{?dist}.cpanel
 Vendor: cPanel, Inc.
 Group: System Environment/Libraries
 License: LGPLv2+ and GPLv2+
 URL: https://github.com/google/brotli
 
-Source: https://github.com/google/brotli/archive/v1.0.9.tar.gz
+Source: https://github.com/google/brotli/archive/v1.0.10.tar.gz
 
 Patch1: 0001-Update-CMakefile-to-do-rpath.patch
 
@@ -74,6 +74,9 @@ rm -rf $RPM_BUILD_ROOT
 /opt/cpanel/ea-brotli/include
 
 %changelog
+* Tue Oct 27 2026 Cory McIntire <cory.mcintire@webpros.com> - 1.0.10-1
+- EA-13438: Update ea-brotli from v1.0.9 to v1.0.10 (CVE-2026-111497)
+
 * Mon May 22 2023 Julian Brown <julian.brown@cpanel.net> - 1.0.9-2
 - ZC-10933: Correct brotli dependency
 
