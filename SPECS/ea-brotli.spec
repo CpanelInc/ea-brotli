@@ -9,7 +9,7 @@ Group: System Environment/Libraries
 License: LGPLv2+ and GPLv2+
 URL: https://github.com/google/brotli
 
-Source: https://github.com/google/brotli/archive/v1.0.10.tar.gz
+Source: https://github.com/google/brotli/archive/v%{version}.tar.gz
 
 Patch1: 0001-Update-CMakefile-to-do-rpath.patch
 
